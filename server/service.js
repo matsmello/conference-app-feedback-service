@@ -13,15 +13,19 @@ module.exports = (config) => {
 
   amqplib
     .connect("amqp://localhost")
-    .then((conn) => conn.createChannel())
+    .then((conn) => conn.createChannel()) //create channel
     .then((ch) =>
       ch.assertQueue(q).then(() =>
+        //assert a queue into existence
         ch.consume(q, (msg) => {
+          //Set up a consumer with a callback to be invoked with each message.
           if (msg !== null) {
             log.debug(`Got message ${msg.content.toString()}`);
             const qm = JSON.parse(msg.content.toString());
 
+            // add this message to my feedback service
             feedback.addEntry(qm.name, qm.title, qm.message).then(() => {
+              //Acknowledge the given message, or all messages up to and including the given message.
               ch.ack(msg);
             });
           }
