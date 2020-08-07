@@ -1,5 +1,5 @@
-const fs = require('fs');
-const util = require('util');
+const fs = require("fs");
+const util = require("util");
 
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
@@ -21,7 +21,7 @@ class FeedbackService {
   }
 
   async getData() {
-    const data = await readFile(this.datafile, 'utf8');
+    const data = await readFile(this.datafile, "utf8");
     if (!data) return [];
     return JSON.parse(data);
   }
